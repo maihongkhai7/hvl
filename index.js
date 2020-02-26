@@ -6,9 +6,11 @@ const path=require('path')
 require('dotenv').config()
 const mongoose = require('mongoose');
 
+const cors=require('cors')
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const SECRET = 'shhh';
+
 
 mongoose.set('useCreateIndex', true)
 mongoose.connect(`mongodb://localhost/hvl`, {useNewUrlParser: true,useUnifiedTopology: true});
@@ -19,17 +21,19 @@ db.once('open', function() {
 });
 const User=require('./models/User')
 
+app.use(cors())
 //app.use(express.json()) // for parsing application/json
 app.use(cookieParser()) //cookie-parser dùng để đọc cookies của request:
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.post('/auth/login', (req, res) => {
+app.post('/auth/login', (req, res, next) => {
     const email = req.body.email;
     const pass = req.body.pass;
 
     if(!email || !pass){
-        res.status(200).send({status:'Wrong Email or Password Empty'})
+        res.status(200).send({status:'Sai Email hoặc Mật khẩu. Thử lại!'})
+		next()
     }
     User.findOne({email:req.body.email},(e,usr)=>{
         if(e){console.log(e)}
@@ -40,28 +44,28 @@ app.post('/auth/login', (req, res) => {
                 httpOnly: true,
                 // secure: true;
             })
-            res.status(200).send({status:'Login success'})
+            res.status(200).send({status:'Đăng nhập thành công'})
         }else{
-            res.status(200).send({status:'Wrong Email or Password'})
+            res.status(200).send({status:'Sai Email hoặc Mật khẩu. Thử lại!'})
         }
     }) 
 })
-app.post('/auth/register', (req, res) => {
+app.post('/auth/signup', (req, res) => {
     const email = req.body.email;
     const pass = req.body.pass;
     const repass = req.body.repass;
 
     if(!email || !pass || !repass || pass!=repass){
-        res.status(200).send({status:'Wrong Email or Password'})
+        res.status(200).send({status:'Email hoặc Mật khẩu không hợp lệ.'})
     }else{
         User.findOne({email:req.body.email},(e,usr)=>{
             if(e){console.log(e)}
             if(usr){
-                res.status(200).send({status:'Email has been register'})
+                res.status(200).send({status:'Email đã được Đăng ký'})
             }
             if(!usr){
                 User.create({email:req.body.email,pass:req.body.pass},(e,newuser)=>{
-                    res.status(200).send({status:'Register success.'})
+                    res.status(200).send({status:'Đăng ký thành công.'})
                 })
             }
         })

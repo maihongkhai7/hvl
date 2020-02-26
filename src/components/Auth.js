@@ -1,18 +1,19 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import {
-    Container,Badge,Link,
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Col, Row,
+import {Link} from 'react-router-dom'
 
-  } from 'reactstrap';
-
-const Auth=()=>{
-    const []
-    const [usr,setUsr]=React.useState(null)
-    const [login,setLogin]=React.useState(true)
+const Auth=({u})=>{
+    let login=window.location.pathname=='/login'
+    const [email,setEmail]=React.useState('')
+    const [pass,setPass]=React.useState('')
+    const [repass,setRepass]=React.useState('')
+    console.log(u)
     let getLogin=(login)=>{
-        let data={}
+        let data={
+            email:email,
+            pass:pass,
+            repass:repass
+        }
+        console.log(email)
         if(login){
             fetch('http://localhost:5000/auth/login',
             {method: 'POST', // or 'PUT'
@@ -30,45 +31,40 @@ const Auth=()=>{
         }
     }
     return (
-        <Container>
+        <div>
             {login?<h1>Login </h1>:<h1>Register </h1>}
-            <Form>
-                <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input type="email" name="email" id="email" placeholder="example@gmail.com" />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input type="password" name="password" id="password" placeholder="******" />
-                </FormGroup>
-            {login?'':<FormGroup>
-                    <Label for="repassword">Re enter password</Label>
-                    <Input type="password" name="repassword" id="repassword" placeholder="******" />
-                </FormGroup>
-            }
-            </Form>
-            <Button
-                size="lg"
-                className="bg-gradient-theme-left border-0"
-                block
-                onClick={getLogin}>
+            <form>
+                <div>
+                    <label for="email">Email</label>
+                    <input value={email} onChange={(event)=>{console.log(email);setEmail(event.value)}} type="email" name="email" id="email" placeholder="example@gmail.com" />
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input value={pass} onChange={(event)=>setPass(event.value)} type="password" name="password" id="password" placeholder="******" />
+                </div>
+                {login?'':<div>
+                    <label for="repassword">Re enter password</label>
+                    <input value={repass} onChange={(event)=>setRepass(event.value)} type="password" name="repassword" id="repassword" placeholder="******" />
+                </div>}
+            </form>
+            <button onClick={getLogin}>
                 {login?'Login':'Signup'}
-            </Button>
-            <div className="text-center pt-1">
+            </button>
+            <div>
                 <h6>or</h6>
                 <h6>
                 {!login ? (
-                    <a href="#login" onClick={()=>{setLogin(!login)}}>
+                    <Link to="/login">
                     Login
-                    </a>
+                    </Link>
                 ) : (
-                    <a href="#sigup" onClick={()=>{setLogin(!login)}}>
+                    <Link to="/sigup">
                     Signup
-                    </a>
+                    </Link>
                 )}
                 </h6>
             </div> 
-        </Container>
+        </div>
     )
 }
 
