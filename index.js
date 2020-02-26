@@ -54,9 +54,16 @@ app.post('/auth/signup', (req, res) => {
     const email = req.body.email;
     const pass = req.body.pass;
     const repass = req.body.repass;
-
-    if(!email || !pass || !repass || pass!=repass){
+    let reEmail=/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/
+    let rePass=/\w{6,}/
+    if(!email || !pass || !repass){
         res.status(200).send({status:'Email hoặc Mật khẩu không hợp lệ.'})
+    }else if(!reEmail.test(email)){
+            res.status(200).send({status:'Email không hợp lệ.'})
+    }else if(pass!=repass){
+            res.status(200).send({status:'Nhập lại mật khẩu không trùng khớp.'})
+    }else if(!rePass.test(pass)){
+            res.status(200).send({status:'Mật khẩu phải lớn hơn 6 ký tự bao gồm chữ và số, không chứ các ký tự đặc biệt.'})
     }else{
         User.findOne({email:req.body.email},(e,usr)=>{
             if(e){console.log(e)}
@@ -69,7 +76,11 @@ app.post('/auth/signup', (req, res) => {
                 })
             }
         })
-    }   
+    }
+    
+    
+    
+       
 })
 
 

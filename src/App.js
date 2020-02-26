@@ -15,7 +15,7 @@ function App(props) {
   const handleSubmit = e => {
     e.preventDefault();
     if(l){
-      fetch('http://35.184.21.172/auth/login',
+      fetch('http://184.21.172/auth/login',
       {method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function App(props) {
         sm(r.status)
       });
     }else{
-      fetch('http://35.184.21.172/auth/signup',
+      fetch('http://184.21.172/auth/signup',
       {method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,9 @@ function App(props) {
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Email"
             value={u.email}
-            onChange={(e)=>su({...u,email:e.target.value})}
+            onChange={(e)=>{
+              su({...u,email:e.target.value})
+            }}
           />
         </Form.Item>
         <Form.Item>
