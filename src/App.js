@@ -15,7 +15,7 @@ function App(props) {
   const handleSubmit = e => {
     e.preventDefault();
     if(l){
-      fetch('http://184.21.172/auth/login',
+      fetch('http://35.184.21.172/auth/login',
       {method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function App(props) {
         sm(r.status)
       });
     }else{
-      fetch('http://184.21.172/auth/signup',
+      fetch('http://35.184.21.172/auth/signup',
       {method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
