@@ -46,7 +46,7 @@ function App(props) {
   };
   return (
     <div style={{display:'flex', justifyContent:'center',alignItems:'center',}}>
-    
+    {u?
       <Card style={{ width: 400, padding: '30px' }}>
       <Title>{l?'Đăng Nhập':'Đăng Ký'}</Title>
       {m?<Form.Item><Alert message={m} type="error" style={{with:'100%'}} /></Form.Item>:''}
@@ -94,9 +94,7 @@ function App(props) {
         
       </Form>
      </Card>
-    <Typography>
-    
-    </Typography>
+     :''}
     </div>
     
   );

@@ -40,11 +40,11 @@ app.post('/auth/login', (req, res, next) => {
         if(usr){
             let token = jwt.sign({email: usr.email}, SECRET);
             res.cookie('token', token, {
-                maxAge:50000,
+                maxAge:1000*60*10,
                 httpOnly: true,
                 // secure: true;
             })
-            res.status(200).send({status:'Đăng nhập thành công'})
+            res.status(200).send({status:'ok'})
         }else{
             res.status(200).send({status:'Sai Email hoặc Mật khẩu. Thử lại!'})
         }
@@ -84,19 +84,10 @@ app.post('/auth/signup', (req, res) => {
 })
 
 
-app.use('/api/users', (req, res) => {
-    const token = req.cookies.access_token;
+app.use('/api/yahoo', (req, res) => {
 
-    console.log('token \n', token);
-    try{
-        let a=Object.create(null)
-        decoded = jwt.verify(token, SECRET);
-        res.status(200).json(decoded);
-        console.log(decoded)
-    }catch(err){
-        res.status(400)
-        throw err;
-    }
+    console.log('request'+req.body);
+
     
 })
 app.use("/build", express.static('./build/'));
